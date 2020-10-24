@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpikeSpawner : MonoBehaviour
+public class CoinSpawner : MonoBehaviour
 {
     public GameObject obstacle;
     public GameObject Player;
@@ -29,11 +29,11 @@ public class SpikeSpawner : MonoBehaviour
         {
             //Check how far the player has moved from the spawn point
             float distance = Vector2.Distance(Player.transform.position, SpawnPoint.transform.position);
-            Vector3 newSpikePos = new Vector3(transform.position.x+distance, transform.position.y, transform.position.z);
+            Vector3 newSpikePos = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z);
             Instantiate(obstacle, newSpikePos, Quaternion.identity); //Spawn obstacle at spawner at current spawner position with no rotation
-            
+
             //Add some degree of randomness
-            randomAmount = (float) rnd.NextDouble();
+            randomAmount = (float)rnd.NextDouble();
             timeBtwSpawn = startTimeBtwSpawn + randomAmount; //Reset spawning timer
 
             //As long as the time between spawn does not fall below minimum, decrease to make game harder
@@ -46,6 +46,6 @@ public class SpikeSpawner : MonoBehaviour
         {
             timeBtwSpawn -= Time.deltaTime;
         }
-        
+
     }
 }

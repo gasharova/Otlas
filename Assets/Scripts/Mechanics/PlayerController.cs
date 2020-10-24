@@ -20,8 +20,12 @@ namespace Platformer.Mechanics
 
         /// <summary>
         /// Max horizontal speed of the player.
-        /// </summary>
-        public float maxSpeed = 7;
+        /// </summary>#
+        ///
+        public float initialPlayerSpeed = 1;
+        private float playerSpeed;
+        public float maxSpeed = 2;
+        public float increaseSpeed;
         /// <summary>
         /// Initial jump velocity at the start of a jump.
         /// </summary>
@@ -49,13 +53,26 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+
+            playerSpeed = initialPlayerSpeed; //set player speed
         }
 
         protected override void Update()
         {
             if (controlEnabled)
             {
-                move.x = Input.GetAxis("Horizontal");
+                //move.x = Input.GetAxis("Horizontal"); //this was the previous arrow key input
+                move.x = playerSpeed; //set player speed
+                //As long as the speed is under max, increase slowly
+                if (playerSpeed < maxSpeed)
+                {
+                    playerSpeed += increaseSpeed;
+                }
+
+
+
+
+
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp("Jump"))

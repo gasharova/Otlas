@@ -11,9 +11,18 @@ namespace Platformer.Mechanics
     /// <summary>
     /// This class generates new sections.
     /// </summary> 
+    /// 
+
     class Generator : MonoBehaviour
     {
+        //Get player and spawnpoint positions to calculate how far the player has moved in the game, to determine where to place obstacles
+        public GameObject Player;
+        public GameObject SpawnPoint;
+
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+
+        public float startTimeBtwSpawn;
+        private float timeBtwSpawn; //How long between each spawn
 
         //define an Array
         public static GameObject[] sections;
@@ -42,12 +51,24 @@ namespace Platformer.Mechanics
         }
         void Update()
         {
-            if(numSpawned<1)
+            if(timeBtwSpawn <= 0) //If the spawning timer ran out aka it is time to spawn new
             {
+                //Calculate where the new object should spawn
+                //Check how far the player has moved from the spawn point
+                float distance = Vector2.Distance(Player.transform.position, SpawnPoint.transform.position);
+                Vector3 newPos = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z); //Will need to change y to randomise
+
+
                 //where your instantiated object spawns from
-                transform.position = new Vector2(1,2);
+                transform.position = newPos;
                 SpawnRandomSection();
+                timeBtwSpawn = startTimeBtwSpawn; //Reset spawning timer
             }
+            else //Decrease timer
+            {
+                timeBtwSpawn -= Time.deltaTime;
+            }
+
         }
 
     }

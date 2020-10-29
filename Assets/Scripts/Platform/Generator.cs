@@ -21,7 +21,7 @@ namespace Platformer.Mechanics
 
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
-        public float startTimeBtwSpawn;
+        public float startTimeBtwSpawn = 5;
         private float timeBtwSpawn; //How long between each spawn
 
         //define an Array

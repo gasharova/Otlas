@@ -5,7 +5,9 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using TMPro;
 
+// [RequireComponent(typeof(AudioSource))]
 namespace Platformer.Mechanics
 {
     /// <summary>
@@ -18,6 +20,8 @@ namespace Platformer.Mechanics
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
+        public TextMeshProUGUI textCoins;
+
         /// <summary>
         /// Max horizontal speed of the player.
         /// </summary>#
@@ -25,7 +29,7 @@ namespace Platformer.Mechanics
         public float initialPlayerSpeed = 1;
         private float playerSpeed;
         public float maxSpeed = 2;
-        public float increaseSpeed;
+        public float decreaseSpeed;
         /// <summary>
         /// Initial jump velocity at the start of a jump.
         /// </summary>
@@ -46,6 +50,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+
+        public bool musicIsOff = true;
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -59,19 +66,96 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            // Initial background music
+            if (musicIsOff) {
+                BackgroundAudio.PlaySound("MainTheme");
+                musicIsOff = false;
+            }
+
             if (controlEnabled)
             {
                 //move.x = Input.GetAxis("Horizontal"); //this was the previous arrow key input
                 move.x = playerSpeed; //set player speed
+
                 //As long as the speed is under max, increase slowly
-                if (playerSpeed < maxSpeed)
+                if (playerSpeed > maxSpeed)
                 {
-                    playerSpeed += increaseSpeed;
+                    playerSpeed -= decreaseSpeed;
                 }
 
 
+                /*
+                if (coinNum == 1)
+                {
+                    //Reset all backgrounds away
+                    background1.transform.position = new Vector3(background1.transform.position.x, -100, background1.transform.position.z);
+                    background2.transform.position = new Vector3(background2.transform.position.x, -100, background2.transform.position.z);
+                    background3.transform.position = new Vector3(background3.transform.position.x, -100, background3.transform.position.z);
+                    background4.transform.position = new Vector3(background4.transform.position.x, -100, background4.transform.position.z);
 
+                    //Move the one we want
+                    background1.transform.position = new Vector3(background1.transform.position.x, 0, background1.transform.position.z);
 
+                    // Music for the specific background
+                    BackgroundAudio.PlaySound("DarkForest");
+                }
+                if (Input.GetKey("1"))
+                {
+                    //Reset all backgrounds away
+                    background1.transform.position = new Vector3(background1.transform.position.x, -100, background1.transform.position.z);
+                    background2.transform.position = new Vector3(background2.transform.position.x, -100, background2.transform.position.z);
+                    background3.transform.position = new Vector3(background3.transform.position.x, -100, background3.transform.position.z);
+                    background4.transform.position = new Vector3(background4.transform.position.x, -100, background4.transform.position.z);
+
+                    //Move the one we want
+                    background1.transform.position = new Vector3(background1.transform.position.x, 0, background1.transform.position.z);
+
+                    // Music for the specific background
+                    BackgroundAudio.PlaySound("DarkForest");
+                }
+                if (Input.GetKey("2"))
+                {
+                    //Reset all backgrounds away
+                    background1.transform.position = new Vector3(background1.transform.position.x, -100, background1.transform.position.z);
+                    background2.transform.position = new Vector3(background2.transform.position.x, -100, background2.transform.position.z);
+                    background3.transform.position = new Vector3(background3.transform.position.x, -100, background3.transform.position.z);
+                    background4.transform.position = new Vector3(background4.transform.position.x, -100, background4.transform.position.z);
+
+                    //Move the one we want
+                    background2.transform.position = new Vector3(background2.transform.position.x, 0, background2.transform.position.z);
+
+                    // Music for the specific background
+                    BackgroundAudio.PlaySound("RockyHills");
+                }
+                if (Input.GetKey("3"))
+                {
+                    //Reset all backgrounds away
+                    background1.transform.position = new Vector3(background1.transform.position.x, -100, background1.transform.position.z);
+                    background2.transform.position = new Vector3(background2.transform.position.x, -100, background2.transform.position.z);
+                    background3.transform.position = new Vector3(background3.transform.position.x, -100, background3.transform.position.z);
+                    background4.transform.position = new Vector3(background4.transform.position.x, -100, background4.transform.position.z);
+
+                    //Move the one we want
+                    background3.transform.position = new Vector3(background3.transform.position.x, 0, background3.transform.position.z);
+
+                    // Music for the specific background
+                    BackgroundAudio.PlaySound("PeacefulMountains");
+                }
+                if (Input.GetKey("4"))
+                {
+                    //Reset all backgrounds away
+                    background1.transform.position = new Vector3(background1.transform.position.x, -100, background1.transform.position.z);
+                    background2.transform.position = new Vector3(background2.transform.position.x, -100, background2.transform.position.z);
+                    background3.transform.position = new Vector3(background3.transform.position.x, -100, background3.transform.position.z);
+                    background4.transform.position = new Vector3(background4.transform.position.x, -100, background4.transform.position.z);
+
+                    //Move the one we want
+                    background4.transform.position = new Vector3(background4.transform.position.x, 0, background4.transform.position.z);
+
+                    // Music for the specific background
+                    BackgroundAudio.PlaySound("Waterfalls");
+                }
+                */
 
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
                     jumpState = JumpState.PrepareToJump;

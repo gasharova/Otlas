@@ -17,6 +17,7 @@ namespace Platformer.Mechanics
             var p = collider.gameObject.GetComponent<PlayerController>();
             if (p != null)
             {
+                BackgroundAudio.PlaySound("Death");
                 var ev = Schedule<PlayerEnteredDeathZone>();
                 ev.deathzone = this;
             }
